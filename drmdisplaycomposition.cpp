@@ -51,13 +51,14 @@ int DrmDisplayComposition::Init(DrmResources *drm, DrmCrtc *crtc,
   crtc_ = crtc;  // Can be NULL if we haven't modeset yet
   importer_ = importer;
   frame_no_ = frame_no;
-
+#if 0
   int ret = sw_sync_timeline_create();
   if (ret < 0) {
     ALOGE("Failed to create sw sync timeline %d", ret);
     return ret;
   }
   timeline_fd_ = ret;
+#endif
   return 0;
 }
 
@@ -357,7 +358,7 @@ int DrmDisplayComposition::Plan(SquashState *squash,
 
   if (planes_can_use == 0 && layers_remaining.size() > 0) {
     ALOGE("Protected layers consumed all hardware planes");
-    return CreateAndAssignReleaseFences();
+    return 0;//CreateAndAssignReleaseFences();
   }
 
   std::vector<size_t> layers_remaining_if_squash;
@@ -404,7 +405,7 @@ int DrmDisplayComposition::Plan(SquashState *squash,
                             overlay_planes);
   }
 
-  return CreateAndAssignReleaseFences();
+  return 0;//CreateAndAssignReleaseFences();
 }
 
 static const char *DrmCompositionTypeToString(DrmCompositionType type) {

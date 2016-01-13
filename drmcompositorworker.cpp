@@ -43,6 +43,7 @@ int DrmCompositorWorker::Init() {
 
 void DrmCompositorWorker::Routine() {
   int ret;
+#if 0
   if (!compositor_->HaveQueuedComposites()) {
     ret = Lock();
     if (ret) {
@@ -78,7 +79,7 @@ void DrmCompositorWorker::Routine() {
         return;
     }
   }
-
+#endif
   ret = compositor_->Composite();
   if (ret)
     ALOGE("Failed to composite! %d", ret);

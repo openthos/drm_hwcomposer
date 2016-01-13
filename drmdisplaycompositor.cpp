@@ -672,7 +672,7 @@ int DrmDisplayCompositor::CommitFrame(DrmDisplayComposition *display_comp,
           break;
         }
         DrmHwcLayer &layer = layers[comp_plane.source_layer];
-        if (!test_only && layer.acquire_fence.get() >= 0) {
+        if (0) {//!test_only && layer.acquire_fence.get() >= 0) {
           int acquire_fence = layer.acquire_fence.get();
           for (int i = 0; i < kAcquireWaitTries; ++i) {
             ret = sync_wait(acquire_fence, kAcquireWaitTimeoutMs);
@@ -1091,7 +1091,7 @@ int DrmDisplayCompositor::SquashFrame(DrmDisplayComposition *src,
     // The OutputFds point to freed memory after hwc_set returns. They are
     // returned to the default to prevent DrmDisplayComposition::Plan from
     // filling the OutputFds.
-    layer.release_fence = OutputFd();
+//    layer.release_fence = OutputFd();
     dst_layers.emplace_back(std::move(layer));
 
     if (comp_plane.plane->type() == DRM_PLANE_TYPE_PRIMARY &&

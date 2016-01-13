@@ -410,7 +410,7 @@ static int hwc_set(hwc_composer_device_1_t *dev, size_t num_displays,
   struct hwc_context_t *ctx = (struct hwc_context_t *)&dev->common;
   int ret = 0;
 
-  std::vector<CheckedOutputFd> checked_output_fences;
+//  std::vector<CheckedOutputFd> checked_output_fences;
   std::vector<DrmHwcDisplayContents> displays_contents;
   std::vector<DrmCompositionDisplayLayersMap> layers_map;
   std::vector<std::vector<size_t>> layers_indices;
@@ -433,7 +433,7 @@ static int hwc_set(hwc_composer_device_1_t *dev, size_t num_displays,
       ctx->virtual_compositor_worker.QueueComposite(dc);
       continue;
     }
-
+#if 0
     std::ostringstream display_index_formatter;
     display_index_formatter << "retire fence for display " << i;
     std::string display_fence_description(display_index_formatter.str());
@@ -441,7 +441,7 @@ static int hwc_set(hwc_composer_device_1_t *dev, size_t num_displays,
                                        display_fence_description.c_str(),
                                        ctx->dummy_timeline);
     display_contents.retire_fence = OutputFd(&dc->retireFenceFd);
-
+#endif
     size_t num_dc_layers = dc->numHwLayers;
     int framebuffer_target_index = -1;
     for (size_t j = 0; j < num_dc_layers; ++j) {
@@ -477,7 +477,7 @@ static int hwc_set(hwc_composer_device_1_t *dev, size_t num_displays,
 
       if (sf_layer->compositionType == HWC_OVERLAY)
         indices_to_composite.push_back(j);
-
+#if 0
       layer.acquire_fence.Set(sf_layer->acquireFenceFd);
       sf_layer->acquireFenceFd = -1;
 
@@ -489,6 +489,7 @@ static int hwc_set(hwc_composer_device_1_t *dev, size_t num_displays,
                                          layer_fence_description.c_str(),
                                          ctx->dummy_timeline);
       layer.release_fence = OutputFd(&sf_layer->releaseFenceFd);
+#endif
     }
 
     // This is a catch-all in case we get a frame without any overlay layers, or
@@ -556,7 +557,7 @@ static int hwc_set(hwc_composer_device_1_t *dev, size_t num_displays,
     hwc_display_contents_1_t *dc = sf_display_contents[i];
     if (!dc)
       continue;
-
+#if 0
     size_t num_dc_layers = dc->numHwLayers;
     for (size_t j = 0; j < num_dc_layers; ++j) {
       hwc_layer_1_t *layer = &dc->hwLayers[j];
@@ -564,6 +565,7 @@ static int hwc_set(hwc_composer_device_1_t *dev, size_t num_displays,
         continue;
       hwc_add_layer_to_retire_fence(layer, dc);
     }
+#endif
   }
 
   composition.reset(NULL);
