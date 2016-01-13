@@ -765,7 +765,7 @@ int DrmDisplayCompositor::CommitFrame(DrmDisplayComposition *display_comp,
       ALOGE("Failed to add plane %d to set", plane->id());
       break;
     }
-
+#if 0
     if (plane->rotation_property().id()) {
       ret = drmModeAtomicAddProperty(pset, plane->id(),
                                   plane->rotation_property().id(), rotation);
@@ -775,7 +775,7 @@ int DrmDisplayCompositor::CommitFrame(DrmDisplayComposition *display_comp,
         break;
       }
     }
-
+#endif
     if (plane->alpha_property().id()) {
       ret = drmModeAtomicAddProperty(pset, plane->id(),
                                   plane->alpha_property().id(), alpha);
